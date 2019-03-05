@@ -1,0 +1,38 @@
+//
+// Protocol buffers definition for Hello World
+//
+syntax = "proto3";
+package example.grpc;
+
+message PlayerMoveRequest {
+  int32 row_number = 1;
+  int32 column_number = 2;
+  int32 player_number = 3;
+}
+
+message PlayerMoveResponse {
+  bool valid_move = 1;
+}
+
+message WinnerResponse {
+  int32 winner_id = 1;
+}
+
+message WinnerRequest {
+
+}
+
+message CurrentBoardResponse {
+  string current_board = 1;
+}
+
+message CurrentBoardRequest {
+
+}
+
+service TTTService {
+  rpc GetBoard(CurrentBoardRequest) returns (CurrentBoardResponse);
+  rpc GetWinner(WinnerRequest) returns (WinnerResponse);
+  rpc Play(PlayerMoveRequest) returns (PlayerMoveResponse);
+
+}
