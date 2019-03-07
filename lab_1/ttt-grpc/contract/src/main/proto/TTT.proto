@@ -30,6 +30,7 @@ message CurrentBoardRequest {
 
 }
 
+
 service TTTService {
   rpc GetBoard(CurrentBoardRequest) returns (CurrentBoardResponse);
   rpc GetWinner(WinnerRequest) returns (WinnerResponse);

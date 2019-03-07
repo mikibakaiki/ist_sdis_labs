@@ -17,7 +17,6 @@ public class Client {
 	int player = 1;
 
 	public Client() {
-//		ttt = new TTT();
 		keyboardSc = new Scanner(System.in);
 	}
 
@@ -33,7 +32,7 @@ public class Client {
 		return play;
 	}
 
-	public void playGame() {
+	public void playGame(TTTServiceGrpc.TTTServiceBlockingStub stub) {
 		int play;
 		boolean playAccepted;
 
@@ -43,40 +42,39 @@ public class Client {
 				TTT.CurrentBoardRequest boardRequest = TTT.CurrentBoardRequest.newBuilder().build();
 				TTT.CurrentBoardResponse boardResponse = stub.getBoard(boardRequest);
 
-				System.out.println(boardResponse);
+				System.out.println(boardResponse.getCurrentBoard());
 
 				play = readPlay();
 				if (play != 0) {
 					TTT.PlayerMoveRequest playRequest = TTT.PlayerMoveRequest.newBuilder().
-							setColumnNumber(--play / 3).setRowNumber(play % 3).setPlayerNumber(player).build();
+							setRowNumber(--play / 3).setColumnNumber(play % 3).setPlayerNumber(player).build();
 
-					TTT.PlayerMoveResponse playResponse = stub.validMove(playRequest);
-					//playAccepted = TTT.PlayerMoveRequest.play(--play / 3, play % 3, player);
+					TTT.PlayerMoveResponse playResponse = stub.play(playRequest);
+					System.out.println(playResponse);
+					playAccepted = playResponse.getValidMove();
+
 					if (!playAccepted)
 						System.out.println("Invalid play! Try again.");
 				} else
 					playAccepted = false;
 			} while (!playAccepted);
-			winner = ttt.checkWinner();
+			TTT.WinnerRequest winnerRequest = TTT.WinnerRequest.newBuilder().build();
+			TTT.WinnerResponse winnerResponse = stub.getWinner(winnerRequest);
+			winner = winnerResponse.getWinnerId();
+
 		} while (winner == -1);
+
+		TTT.CurrentBoardRequest boardRequest = TTT.CurrentBoardRequest.newBuilder().build();
+		TTT.CurrentBoardResponse boardResponse = stub.getBoard(boardRequest);
+		System.out.println(boardResponse.getCurrentBoard());
 	}
 
-	public void congratulate() {
+	public void congratulate(TTTServiceGrpc.TTTServiceBlockingStub stub) {
 		if (winner == 2)
 			System.out.printf("\nHow boring, it is a draw\n");
 		else
 			System.out.printf("\nCongratulations, player %d, YOU ARE THE WINNER!\n", winner);
 	}
-
-//	public static void main(String[] args) {
-//		Game g = new Game();
-//		g.playGame();
-//		g.congratulate();
-//	}
-
-
-
-
 
 
 	public static void main(String[] args) throws Exception {
@@ -109,16 +107,10 @@ public class Client {
 
 		TTTServiceGrpc.TTTServiceBlockingStub stub = TTTServiceGrpc.newBlockingStub(channel);
 
-		Game g = new Game();
-		g.playGame();
-		g.congratulate();
-//		TTT.HelloRequest request = HelloWorld.HelloRequest.newBuilder().setName("friend").build();
-//
-//		// Finally, make the call using the stub
-//		HelloWorld.HelloResponse response = stub.get(request);
-//
-//		// HelloResponse has auto-generated toString method that shows its contents
-//		System.out.println(response);
+
+		Client cli = new Client();
+		cli.playGame(stub);
+		cli.congratulate(stub);
 
 		// A Channel should be shutdown before stopping the process.
 		channel.shutdownNow();
