@@ -8,23 +8,9 @@ public class Game {
 	Scanner keyboardSc;
 	int winner = 0;
 	int player = 1;
-	
-	TTTService tttRemote = null;
-
 
 	public Game() {
 		keyboardSc = new Scanner(System.in);
-		
-		try {
-			tttRemote = (TTTService) Naming.lookup("//localhost:8000/TTTService");
-
-		} catch (NotBoundException e) {
-			System.out.println("Error getting the service: " + e.getMessage());
-
-		} catch (RemoteException e) {
-			System.out.println("Error getting the service: " + e.getMessage());
-		}
-
 	}
 
 	public int readPlay() {
@@ -39,7 +25,7 @@ public class Game {
 		return play;
 	}
 
-	public void playGame() {
+	public void playGame(TTTService tttRemote) {
 		int play;
 		boolean playAccepted;
 		try {
@@ -76,8 +62,11 @@ public class Game {
 
 	public static void main(String[] args) {
 		try {
+			TTTService tttRemote = null;
+			tttRemote = (TTTService) Naming.lookup("//localhost:8000/TTT");
+
 			Game g = new Game();
-			g.playGame();
+			g.playGame(tttRemote);
 			g.congratulate();
 		} catch (RemoteException e) {
             System.out.println("TTTGame: " + e.getMessage());

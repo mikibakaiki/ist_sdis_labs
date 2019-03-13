@@ -7,20 +7,12 @@ public class TTTServer {
     public static void main(String args[]){
         int registryPort = 8000;
         System.out.println("Main OK");
-        try{
+        try {
             TTT ttt = new TTT();
             System.out.println("After create");
 
             Registry reg = LocateRegistry.createRegistry(registryPort);
             reg.rebind("TTT", ttt);
-
-            // A more realistic would be having an autonomous RMI Registry
-            // available at the default port
-            // (implies defining a 'codebase' to allow the RMI Registry
-            // to remotely obtain the interfaces for the
-            // objects that will be registered):
-            //
-            // Naming.rebind("ShapeList", aShapelist);
 
             System.out.println("TTT server ready");
 
@@ -29,7 +21,7 @@ public class TTTServer {
             System.in.read();
             System.exit(0);
 
-        }catch(Exception e) {
+        } catch(Exception e) {
             System.out.println("TTT server main " + e.getMessage());
         }
     }
