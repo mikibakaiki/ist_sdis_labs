@@ -1,0 +1,11 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - ShapeListServer",
+            "request": "launch",
+            "mainClass": "ttt.ShapeListServer",
+            "projectName": "ttt-rmi-server"
+        }
+    ]
+}
