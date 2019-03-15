@@ -37,6 +37,7 @@ public class ServerTTT {
 
 		// Do not exit the main thread. Wait until server is terminated.
 		server.awaitTermination();
+//		awaitTermination();
 	}
 
 }

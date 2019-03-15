@@ -11,19 +11,23 @@ public class TTT extends UnicastRemoteObject implements TTTService {
 	private int nextPlayer = 0;
 	private int numPlays = 0;
 
-	/** The Game Board */
+	/**
+	 * The Game Board
+	 */
 	private char board[][] = {
-		{ '1', '2', '3' }, /* Initial values are reference numbers */
-		{ '4', '5', '6' }, /* used to select a vacant square for */
-		{ '7', '8', '9' } /* a turn. */
-		};
+			{'1', '2', '3'}, /* Initial values are reference numbers */
+			{'4', '5', '6'}, /* used to select a vacant square for */
+			{'7', '8', '9'} /* a turn. */
+	};
 
 	public TTT() throws RemoteException {
 
 	}
 
-	/** Return a textual representation of the current game board. */
-	public String currentBoard() throws RemoteException{
+	/**
+	 * Return a textual representation of the current game board.
+	 */
+	public String currentBoard() throws RemoteException {
 		StringBuilder sb = new StringBuilder();
 		sb.append("\n\n ");
 
@@ -46,9 +50,11 @@ public class TTT extends UnicastRemoteObject implements TTTService {
 		return sb.toString();
 	}
 
-	/** Make a game play on behalf of provided player. */
-	
-	public boolean play(int row, int column, int player) throws RemoteException{
+	/**
+	 * Make a game play on behalf of provided player.
+	 */
+
+	public boolean play(int row, int column, int player) throws RemoteException {
 		// outside board ?
 		if (!(row >= 0 && row < 3 && column >= 0 && column < 3))
 			return false;
@@ -80,7 +86,7 @@ public class TTT extends UnicastRemoteObject implements TTTService {
 	 * of the object is acquired when the method is called and released on
 	 * return.
 	 */
-	public synchronized int checkWinner() throws RemoteException{
+	public synchronized int checkWinner() throws RemoteException {
 		int i;
 
 		/* Check for a winning line - diagonals first */
@@ -115,6 +121,13 @@ public class TTT extends UnicastRemoteObject implements TTTService {
 		else
 			/* Game is not over yet */
 			return -1;
+	}
+
+	public synchronized void passaVez() throws RemoteException {
+
+		nextPlayer = (nextPlayer + 1) % 2;
+
+
 	}
 
 }

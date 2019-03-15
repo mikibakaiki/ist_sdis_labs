@@ -11,4 +11,6 @@ public interface TTTService extends Remote {
 
     int checkWinner() throws RemoteException;
 
+    void passaVez() throws RemoteException;
+
 }

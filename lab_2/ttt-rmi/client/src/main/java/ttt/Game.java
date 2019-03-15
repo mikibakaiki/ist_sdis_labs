@@ -21,6 +21,9 @@ public class Game {
 							+ "where you want to place your %c (or 0 to refresh the board): \n",
 					player, (player == 1) ? 'X' : 'O');
 			play = keyboardSc.nextInt();
+			if (play == 444) {
+				return play;
+			}
 		} while (play > 9 || play < 0);
 		return play;
 	}
@@ -33,10 +36,13 @@ public class Game {
 				player = ++player % 2;
 				do {
 					System.out.println(tttRemote.currentBoard());
-					
+
 					play = readPlay();
-					
-					if (play != 0) {
+					if (play == 444) {
+						tttRemote.passaVez();
+						playAccepted = true;
+					}
+					else if (play != 0) {
 						playAccepted = tttRemote.play(--play / 3, play % 3, player);
 						if (!playAccepted)
 							System.out.println("Invalid play! Try again.");
@@ -68,11 +74,18 @@ public class Game {
 			Game g = new Game();
 			g.playGame(tttRemote);
 			g.congratulate();
+		} catch (UnknownHostException e) {
+			System.out.println("Unknown host: " + e.getMessage());
+		} catch (ConnectException e) {
+			System.out.println("Connection error: " + e.getMessage());
+		} catch (UnmarshalException e) {
+			System.out.println("Error converting byte-stream to data: " + e.getMessage());
+		} catch (MarshalException e) {
+			System.out.println("Error converting data to byte-stream: " + e.getMessage());
 		} catch (RemoteException e) {
             System.out.println("TTTGame: " + e.getMessage());
         } catch (Exception e) {
-            System.out.println("Lookup: " + e.getMessage());
+            System.out.println("Error: " + e.getMessage());
         }
-		
 	}
 }
