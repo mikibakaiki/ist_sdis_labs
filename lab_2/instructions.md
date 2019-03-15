@@ -2,7 +2,7 @@
 
 **Exercício:** Método remoto `passaVez()`, que passa a vez de jogar para o próximo jogador.
 
-Este comando é executado quando o jogador escolhe a opção `444`.
+Este método é executado quando o jogador escolhe a comando `444`.
 
 
 Executar cada um dos comandos abaixo em terminais diferentes. (**Sugestão: utilizar o `tmux`**)
@@ -14,5 +14,5 @@ Executar cada um dos comandos abaixo em terminais diferentes. (**Sugestão: util
 
 3. Executar o comando `mvn clean compile exec:java` no directório `ttt-rmi/client`
 
-4. Tentar ganhar. :smiley-face:
+4. Tentar ganhar. :smiley:
 
